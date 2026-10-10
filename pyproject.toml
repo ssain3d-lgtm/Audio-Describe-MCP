@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audio-describe-mcp"
+version = "0.1.0"
+description = "MCP server that lets an LLM agent 'see' sound: a file-hash ID, a numeric signature and a spectrogram image for any audio file. No index, no model needed."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+keywords = ["mcp", "audio", "spectrogram", "sound-effects", "llm", "agent"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pillow>=10.1",
+    "psutil>=5.9",
+    "mcp>=2.3",
+]
+
+[project.optional-dependencies]
+# audio-to-audio "same kind of sound?" comparison with Google's EmbeddingGemma 2 (CPU).  Tested with torch 2.14, transformers 5.19, sentence-transformers 6.1.
+semantic = ["torch", "transformers>=5.19", "sentence-transformers>=6.1"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+audio-describe-mcp = "audio_describe_mcp.server:main"
+audio-describe = "audio_describe_mcp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
